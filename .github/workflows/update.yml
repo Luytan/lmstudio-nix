@@ -26,8 +26,8 @@ jobs:
           PAGE=$(curl -sL "https://lmstudio.ai/download")
 
           # Extract version from JSON data in page (linux x64 version)
-          VERSION=$(echo "$PAGE" | grep -oP '"linux":\s*\{"x64":\s*\{"version":\s*"\K[^"]+' | head -1)
-          BUILD=$(echo "$PAGE" | grep -oP '"linux":\s*\{"x64":\s*\{"version":\s*"[^"]+",\s*"build":\s*"\K[^"]+' | head -1)
+          VERSION=$(echo "$PAGE" | grep -oP 'x64[^\}]*version\\\":\\\"\K[0-9.]+' | head -1)
+          BUILD=$(echo "$PAGE" | grep 'linux' | grep -oP '(?<=build\\\":\\\")[0-9.]+'|head -1)
 
           if [ -n "$BUILD" ] && [ "$BUILD" != "null" ]; then
             FULL_VERSION="${VERSION}-${BUILD}"
